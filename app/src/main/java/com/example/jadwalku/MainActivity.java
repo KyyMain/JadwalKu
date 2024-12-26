@@ -156,8 +156,7 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         String userId = user.getUid();
         // Query untuk mengambil tugas berdasarkan userId dari Firestore
         query = firestore.collection("users").document(userId)
-                .collection("tasks")
-                .orderBy("time", Query.Direction.DESCENDING);
+                .collection("tasks");
 
         listenerRegistration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

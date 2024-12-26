@@ -66,7 +66,7 @@
         android:layout_width="240dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/pink"
+        android:backgroundTint="#FF4081"
         android:text="Sign Up"
         android:textColor="@color/white"
         android:textSize="15dp"
@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
         android:text="Login"
-        android:textColor="#F10091"
+        android:textColor="#FF4081"
         android:textSize="10sp"
         app:layout_constraintStart_toEndOf="@+id/textlogin"
         app:layout_constraintTop_toBottomOf="@+id/Signup_btn" />

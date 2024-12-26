@@ -41,7 +41,7 @@
         android:layout_width="100dp"
         android:layout_height="45dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/pink"
+        android:backgroundTint="#FF4081"
         android:text="Simpan"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"

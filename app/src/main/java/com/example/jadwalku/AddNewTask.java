@@ -147,7 +147,6 @@ public class AddNewTask extends BottomSheetDialogFragment {
                 taskMap.put("task", task);
                 taskMap.put("due", dueDate);
                 taskMap.put("status", 0);
-                taskMap.put("time", FieldValue.serverTimestamp());
                 taskMap.put("userId", userId);
 
                 firestore.collection("users").document(userId).collection("tasks")
