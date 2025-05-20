@@ -6,6 +6,13 @@
     <!-- akses internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- izin untuk fitur pengingat -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -46,7 +53,20 @@
         <activity
             android:name=".SignUpActivity"
             android:exported="true" />
-    </application>
 
+        <!-- Receiver untuk pengingat -->
+        <receiver
+            android:name=".NotificationReceiver"
+            android:exported="false" />
+
+        <!-- Receiver untuk boot completed -->
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
 
 </manifest>

@@ -55,6 +55,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         notifyItemRemoved(position); // Beritahu adapter bahwa item dihapus
     }
 
+    // Fungsi untuk mendapatkan tugas berdasarkan posisi
+    public ToDoModel getTask(int position) {
+        return todoList.get(position);
+    }
+
     // Fungsi untuk mendapatkan konteks dari MainActivity
     public Context getContext() {
         return activity;
@@ -70,6 +75,17 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         bundle.putString("due", toDoModel.getDue());
         bundle.putString("id", toDoModel.getId());
 
+        // Tambahkan waktu ke bundle jika ada
+        if (toDoModel.getTime() != null && !toDoModel.getTime().isEmpty()) {
+            bundle.putString("time", toDoModel.getTime());
+        }
+
+        // Tambahkan data pengingat jika tersedia
+        if (toDoModel.hasReminder()) {
+            bundle.putBoolean("hasReminder", toDoModel.hasReminder());
+            bundle.putInt("reminderMinutes", toDoModel.getReminderMinutes());
+        }
+
         // Buat dan tampilkan dialog AddNewTask
         AddNewTask addNewTask = new AddNewTask();
         addNewTask.setArguments(bundle);
@@ -84,7 +100,20 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
         // Set nilai item berdasarkan data model
         holder.mCheckBox.setText(toDoModel.getTask());
-        holder.mDueDateTv.setText("Tanggal " + toDoModel.getDue());
+
+        // Tambahkan waktu ke tampilan tanggal jika tersedia
+        String timeInfo = "";
+        if (toDoModel.getTime() != null && !toDoModel.getTime().isEmpty()) {
+            timeInfo = ", Jam " + toDoModel.getTime();
+        }
+
+        // Tambahkan indikator pengingat jika ada
+        if (toDoModel.hasReminder()) {
+            holder.mDueDateTv.setText("Tanggal " + toDoModel.getDue() + timeInfo + " 🔔");
+        } else {
+            holder.mDueDateTv.setText("Tanggal " + toDoModel.getDue() + timeInfo);
+        }
+
         holder.mCheckBox.setChecked(toBoolean(toDoModel.getStatus()));
 
         if (toDoModel.getStatus() == 1) {
@@ -106,7 +135,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
             );
         });
     }
-
 
     // Fungsi bantu untuk mengonversi status integer ke boolean
     private boolean toBoolean(int status) {

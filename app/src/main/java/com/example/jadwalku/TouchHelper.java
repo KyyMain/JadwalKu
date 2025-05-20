@@ -11,16 +11,20 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jadwalku.Adapter.ToDoAdapter;
+import com.example.jadwalku.Model.ToDoModel;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 
 public class TouchHelper extends ItemTouchHelper.SimpleCallback {
     private ToDoAdapter adapter;
+    private ReminderManager reminderManager;
 
     public TouchHelper(ToDoAdapter adapter) {
         super(0 , ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         this.adapter = adapter;
+        // Buat instance com.example.jadwalku.ReminderManager
+        this.reminderManager = new ReminderManager(adapter.getContext());
     }
 
     @Override
@@ -38,14 +42,20 @@ public class TouchHelper extends ItemTouchHelper.SimpleCallback {
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            // Ambil id tugas untuk membatalkan pengingat
+                            ToDoModel task = adapter.getTask(position);
+                            if (task != null) {
+                                // Batalkan pengingat sebelum menghapus tugas
+                                reminderManager.cancelReminder(task.getId());
+                            }
                             adapter.deleteTask(position);
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    adapter.notifyItemChanged(position);
-                }
-            });
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            adapter.notifyItemChanged(position);
+                        }
+                    });
 
             AlertDialog dialog = builder.create();
             dialog.show();

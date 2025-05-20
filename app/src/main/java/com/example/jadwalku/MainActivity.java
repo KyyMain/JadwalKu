@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
     private ListenerRegistration listenerRegistration;
     private TextView greetingTextView;
 
+    // Tambahkan ReminderManager
+    private ReminderManager reminderManager;
+
     // Cek status autentikasi saat Activity dimulai
     @Override
     protected void onStart() {
@@ -71,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
             finish();
             return;
         }
+
+        // Inisialisasi ReminderManager
+        reminderManager = new ReminderManager(this);
 
         // Inisialisasi TextView untuk ucapan
         greetingTextView = findViewById(R.id.textView2);
@@ -143,6 +149,13 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         // Ambil data dari Firestore dan atur RecyclerView dengan adapter
         showData();
         recyclerView.setAdapter(adapter);
+
+        // Periksa jika ada taskId dari notifikasi yang diklik
+        if (getIntent().hasExtra("taskId")) {
+            String taskId = getIntent().getStringExtra("taskId");
+            // Disini Anda bisa tambahkan logika untuk membuka detail tugas
+            Toast.makeText(this, "Membuka tugas dari notifikasi: " + taskId, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showData() {
@@ -173,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
 
                 HashSet<String> existingIds = new HashSet<>();
                 for (ToDoModel model : mList) {
-                    existingIds.add(model.getTaskId());
+                    existingIds.add(model.getId());
                 }
 
                 // Update daftar tugas berdasarkan perubahan dari Firestore
@@ -186,22 +199,35 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
                             if (!existingIds.contains(id)) {
                                 mList.add(toDoModel);
                                 existingIds.add(id);
+
+                                // Jadwalkan pengingat jika ada
+                                if (toDoModel.hasReminder()) {
+                                    reminderManager.scheduleReminder(toDoModel, toDoModel.getReminderMinutes());
+                                }
                             }
                             break;
                         case REMOVED:
                             mList.remove(toDoModel);
                             existingIds.remove(id);
+                            // Pengingat sudah dibatalkan di TouchHelper
                             break;
                         case MODIFIED:
                             int index = -1;
                             for (int i = 0; i < mList.size(); i++) {
-                                if (mList.get(i).getTaskId().equals(id)) {
+                                if (mList.get(i).getId().equals(id)) {
                                     index = i;
                                     break;
                                 }
                             }
                             if (index != -1) {
                                 mList.set(index, toDoModel);
+
+                                // Update pengingat jika ada
+                                if (toDoModel.hasReminder()) {
+                                    reminderManager.scheduleReminder(toDoModel, toDoModel.getReminderMinutes());
+                                } else {
+                                    reminderManager.cancelReminder(id);
+                                }
                             }
                             break;
                     }
@@ -217,5 +243,14 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         mList.clear();
         showData();
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Lepaskan listener saat Activity dihancurkan
+        if (listenerRegistration != null) {
+            listenerRegistration.remove();
+        }
     }
 }

@@ -29,12 +29,70 @@
         android:layout_marginTop="8dp"
         android:drawableRight="@drawable/baseline_calendar_today_24"
         android:drawablePadding="8dp"
-        android:text="Masukan Tanggal"
+        android:text="Pilih Tanggal"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/task_edittext" />
+
+    <!-- Tambahan untuk waktu -->
+    <TextView
+        android:id="@+id/set_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:drawableRight="@drawable/baseline_access_time_24"
+        android:drawablePadding="8dp"
+        android:text="Pilih Waktu"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_due_tv" />
+
+    <!-- Checkbox untuk pengingat -->
+    <CheckBox
+        android:id="@+id/reminder_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:text="Aktifkan Pengingat"
+        android:textColor="@color/white"
+        android:buttonTint="#FF4081"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_time_tv" />
+
+    <!-- Layout untuk pengingat -->
+    <LinearLayout
+        android:id="@+id/reminder_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/reminder_checkbox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingatkan sebelum:"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/reminder_time_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="#FF4081" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/save_btn"
