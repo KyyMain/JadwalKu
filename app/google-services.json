@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "214423015394",
+    "project_id": "jadwalku-64746",
+    "storage_bucket": "jadwalku-64746.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214423015394:android:ad0aaa74cea348a89ff3bb",
+        "android_client_info": {
+          "package_name": "com.example.jadwalku"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDABjqmhwGFeN6vPhVlp6W3eu763BpIXA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
